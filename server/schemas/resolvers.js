@@ -2,11 +2,13 @@ const { User } = require('../models');
 
 const resolvers = {
     Query: {
-        async getSingleUser(parent, { user = null, params }) {
-            const foundUser = await User.findOne({
-                $or: [{ _id: user ? user._id : params.id }, { username: params.username }],
-            });
-            return foundUser;
+        me: async (parent, args, context) => {
+            if (context.user) {
+                const foundUser = await User.findOne({
+                    _id: context.user._id
+                });
+                return foundUser;
+            }
         },
     },
     Mutations: {

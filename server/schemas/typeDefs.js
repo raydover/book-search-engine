@@ -19,8 +19,7 @@ const typeDefs = gql`
     savedBooks: [bookSchema]
   }
   type Query {
-    book: [Book]
-    user(_id: String): [User]
+    me: User
   }
 
   type Mutation {
