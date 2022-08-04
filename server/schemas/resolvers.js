@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const { AuthenticationError } = require('apollo-server-express')
 
 const resolvers = {
     Query: {
@@ -12,18 +13,21 @@ const resolvers = {
         },
     },
     Mutations: {
-        async createUser(parent, { body }) {
+        addUser: async (parent, args) => {
             const user = await User.create(body);
             const token = signToken(user);
             return { token, user };
         },
-        async login(parent, { body }) {
-            const user = await User.findOne({ $or: [{ username: body.username }, { email: body.email }] });
+        login: async (parent, args) => {
+            const user = await User.findOne(args.email);
+            if (!user){
+                new AuthenticationError("User not found!")
+            }
             const correctPw = await user.isCorrectPassword(body.password);
             const token = signToken(user);
             return { token, user };
         },
-        async saveBook(parent, { user, body }) {
+        saveBook: async (parent, args) => {
             console.log(user);
             const updatedUser = await User.findOneAndUpdate(
                 { _id: user._id },
@@ -32,7 +36,7 @@ const resolvers = {
             );
             return updatedUser;
         },
-        async deleteBook(parent, { user, params }) {
+        deleteBook: async (parent, args) => {
             const updatedUser = await User.findOneAndUpdate(
                 { _id: user._id },
                 { $pull: { savedBooks: { bookId: params.bookId } } },
