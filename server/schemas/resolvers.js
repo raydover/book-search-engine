@@ -18,9 +18,9 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        login: async (parent, args) => {
+        loginUser: async (parent, args) => {
             const user = await User.findOne(args.email);
-            if (!user){
+            if (!user) {
                 new AuthenticationError("User not found!")
             }
             const correctPw = await user.isCorrectPassword(body.password);
@@ -36,7 +36,7 @@ const resolvers = {
             );
             return updatedUser;
         },
-        deleteBook: async (parent, args) => {
+        removeBook: async (parent, args) => {
             const updatedUser = await User.findOneAndUpdate(
                 { _id: user._id },
                 { $pull: { savedBooks: { bookId: params.bookId } } },
