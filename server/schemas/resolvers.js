@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Book } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 
@@ -14,7 +14,7 @@ const resolvers = {
             throw new AuthenticationError('Your not logged in');
         },
     },
-    Mutations: {
+    Mutation: {
         addUser: async (parent, args) => {
             const user = await User.create(args);
             const token = signToken(user);
@@ -25,7 +25,7 @@ const resolvers = {
             if (!user) {
                 throw new AuthenticationError('User not found!')
             }
-            const correctPw = await user.isCorrectPassword(password);
+            const correctPw = await User.isCorrectPassword(password);
             if (!correctPw) {
                 throw new AuthenticationError('Password not found!')
             }
