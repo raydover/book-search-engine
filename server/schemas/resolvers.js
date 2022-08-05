@@ -18,9 +18,9 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        loginUser: async (parent, args) => {
+        login: async (parent, args) => {
             const user = await User.findOne(args.email);
-            if (!user) {
+            if (!user){
                 new AuthenticationError("User not found!")
             }
             const correctPw = await user.isCorrectPassword(body.password);
