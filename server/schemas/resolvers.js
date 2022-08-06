@@ -25,7 +25,7 @@ const resolvers = {
             if (!user) {
                 throw new AuthenticationError('User not found!')
             }
-            const correctPw = await User.isCorrectPassword(password);
+            const correctPw = await user.isCorrectPassword(password);
             if (!correctPw) {
                 throw new AuthenticationError('Password not found!')
             }
@@ -36,7 +36,7 @@ const resolvers = {
             if (context.user) {
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $push: { savedBooks: book } },
+                    { $addToSet: { savedBooks: book } },
                     { new: true }
                 );
                 return updatedUser;
