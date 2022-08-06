@@ -9,25 +9,32 @@ const resolvers = {
                 const foundUser = await User.findOne({ _id: context.user._id });
                 return foundUser;
             }
+
             throw new AuthenticationError('Your not logged in');
         }
     },
     Mutation: {
-        addUser: async (parent, { username, email, pasword }) => {
-            const user = await User.create({ username, email, pasword });
+        addUser: async (parent, {username, email, password}) => {
+            const user = await User.create({username, email, password});
             const token = signToken(user);
+
             return { token, user };
         },
         login: async (parent, { email, password }) => {
             const user = await User.findOne({ email });
+
             if (!user) {
                 throw new AuthenticationError('User not found!')
             }
+
             const correctPw = await user.isCorrectPassword(password);
+
             if (!correctPw) {
                 throw new AuthenticationError('Password not found!')
             }
+
             const token = signToken(user);
+
             return { token, user };
         },
         saveBook: async (parent, { bookData }, context) => {
@@ -37,8 +44,10 @@ const resolvers = {
                     { $addToSet: { savedBooks: bookData } },
                     { new: true }
                 );
+
                 return updatedUser;
             }
+
             throw new AuthenticationError('Your not logged in!')
         },
         removeBook: async (parent, { bookId }, context) => {
@@ -48,8 +57,10 @@ const resolvers = {
                     { $pull: { savedBooks: { bookId } } },
                     { new: true }
                 );
+
                 return updatedUser;
             }
+            
             throw new AuthenticationError('Your not logged in!')
         }
     }
