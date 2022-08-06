@@ -7,9 +7,9 @@ mutation loginUser($email: String!, $password: String!) {
     user {
       _id
       username
-    }
+      }
+   }
   }
-}
 `;
 
 export const ADD_USER = gql`
@@ -19,9 +19,10 @@ export const ADD_USER = gql`
       user {
         _id
         username
+        email
+      }
     }
   }
-}
 `;
 
 export const SAVE_BOOK = gql`
