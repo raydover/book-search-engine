@@ -6,17 +6,15 @@ const resolvers = {
     Query: {
         me: async (parent, args, context) => {
             if (context.user) {
-                const foundUser = await User.findOne({
-                    _id: context.user._id
-                });
+                const foundUser = await User.findOne({ _id: context.user._id });
                 return foundUser;
             }
             throw new AuthenticationError('Your not logged in');
-        },
+        }
     },
     Mutation: {
-        addUser: async (parent, args) => {
-            const user = await User.create(args);
+        addUser: async (parent, { username, email, pasword }) => {
+            const user = await User.create({ username, email, pasword });
             const token = signToken(user);
             return { token, user };
         },
@@ -32,11 +30,11 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        saveBook: async (parent, { book }, context) => {
+        saveBook: async (parent, { bookData }, context) => {
             if (context.user) {
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: book } },
+                    { $addToSet: { savedBooks: bookData } },
                     { new: true }
                 );
                 return updatedUser;
