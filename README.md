@@ -87,9 +87,9 @@ This is what the user will see when sign in is clicked
 
 ## Resources
 
-* [GitHub Repository](https:/)
+* [GitHub Repository](https://github.com/raydover/book-search-engine)
 
-* [Heroku](https://)
+* [Heroku](https://mysterious-chamber-34206.herokuapp.com/)
 
 ## Authors and Acknowledgements
 
