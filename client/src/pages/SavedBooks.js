@@ -15,12 +15,15 @@ const SavedBooks = () => {
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
     if (!token) {
+      
       return false;
     }
+
     try {
       await removeBook({ variables: { bookId } });
 
       removeBookId(bookId);
+
     } catch (err) {
       console.error(err);
     }
