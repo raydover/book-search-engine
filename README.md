@@ -53,7 +53,7 @@ npm run develop
 
 This is the home page of our web application 
 
-![Homepage](./.png)
+![Homepage](./client/assets/Book-Search-Engine.png)
 
 This is what the user will see when search books is clicked 
 
